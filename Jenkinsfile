@@ -3,12 +3,12 @@ pipeline {
     agent any
 /*
 	tools {
-        maven "maven3"
+        maven "Maven3"
     }
 */
     environment {
-        registry = "imranvisualpath/vproappdock"
-        registryCredential = 'dockerhub'
+        registry = "lovarajukandala/vproappdock"
+        registryCredential = 'DockerHubId'
     }
 
     stages{
@@ -57,7 +57,7 @@ pipeline {
             }
         }
         
-        stage('Deploy Image') {
+        stage('Deploy Image to DockerHub') {
           steps{
             script {
               docker.withRegistry( '', registryCredential ) {
@@ -77,11 +77,11 @@ pipeline {
         stage('CODE ANALYSIS with SONARQUBE') {
 
             environment {
-                scannerHome = tool 'mysonarscanner4'
+                scannerHome = tool 'sonar4.8'
             }
 
             steps {
-                withSonarQubeEnv('sonar-pro') {
+                withSonarQubeEnv('sonar') {
                     sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
                    -Dsonar.projectName=vprofile-repo \
                    -Dsonar.projectVersion=1.0 \
